@@ -1,14 +1,14 @@
-"""Entry point for Work Buddy.
+"""Entry point for Work Buddy Desktop Companion.
 
 Usage:
     python main.py
 """
 
-from work_buddy.app import WorkBuddyApp
+from work_buddy.pyqt_app import WorkBuddyAppQt
 
 
 def main() -> None:
-    app = WorkBuddyApp()
+    app = WorkBuddyAppQt()
     app.run()
 
 

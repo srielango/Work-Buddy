@@ -16,6 +16,26 @@ class BotState(Enum):
     SLEEPING = "sleeping"
 
 
+class AvatarType(str, Enum):
+    """Character mascot avatars."""
+
+    DOG = "dog"
+    CAT = "cat"
+    ROBOT = "robot"
+    SMILEY = "smiley"
+
+
+class ColorTheme(str, Enum):
+    """Custom color themes for the pet."""
+
+    GOLDEN = "golden"
+    SNOW = "snow"
+    CHOCOLATE = "chocolate"
+    MIDNIGHT = "midnight"
+    SAKURA = "sakura"
+    CYBER = "cyber"
+
+
 @dataclass
 class Session:
     """A single work session."""

@@ -20,6 +20,9 @@ class Settings:
     sleep_minutes: int = 30
     bot_x: int | None = None
     bot_y: int | None = None
+    avatar: str = "dog"
+    theme: str = "golden"
+    walking_enabled: bool = True
 
     def save(self, path: Path) -> None:
         """Write settings to a JSON file."""

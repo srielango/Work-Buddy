@@ -1,216 +1,109 @@
-# Work Buddy 🤖
+# Work Buddy 🐾 🤖 😊
 
-A lightweight animated desktop companion that tracks your working time.  
-Built entirely in Python with Tkinter — no databases, no web tech, just a friendly little bot on your desktop.
+An adorable, interactive animated desktop pet companion that tracks your working time!
+Built with **Python** and **PyQt6** featuring true 32-bit transparent rendering, walking physics, multiple pets, customizable themes, and a child-friendly interactive tummy gadget.
 
-![Concept](https://img.shields.io/badge/Platform-Windows%2011-blue)
+![Platform](https://img.shields.io/badge/Platform-Windows%2011-blue)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-green)
+![PyQt6](https://img.shields.io/badge/GUI-PyQt6-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ---
 
 ## Features
 
-- **Frameless floating companion** — uses Windows transparency color-keying so the smiley and timer float directly on your desktop without any rectangular window borders or box background
-- **Animated companion** — a canvas-drawn bot with blinking, bouncing, idle, and sleeping animations
-- **Click-to-expand** — collapsed mode shows just the bot + timer; expanded mode shows full controls
-- **Start / Stop** — single toggle button, optional activity/project per session
-- **Multiple sessions per day** — all sessions preserved, never overwritten
-- **Crash recovery** — active session persisted immediately; recovered on next launch
-- **Midnight handling** — sessions auto-close at 23:59:59 if they cross midnight
-- **Weekly summary** — daily + project breakdown for the current week
-- **Excel export** — monthly workbook with daily sheets + monthly summary
-- **Always on top** — unobtrusive, stays visible while you work
-- **Minimize to dot** — tiny restore button when hidden; timer keeps running
-- **Desktop wandering** — the bot occasionally drifts when idle (can be disabled)
+- 🐶 **4 Adorable Avatars**:
+  - **Puppy Dog**: Bouncy floppy ears, wagging tail, cute snout, happy pant/bark when working!
+  - **Kitty Cat**: Alert pointy ears, twitching whiskers, waving tail, cat loaf/sleep pose.
+  - **Robot Buddy**: Rotating glowing antenna beacon, glowing visor, and hover thrusters.
+  - **Smiley Mascot**: Expressive chibi friend with animated blush cheeks.
+- 🎨 **6 Customizable Color Themes**:
+  - 🟡 Golden Honey, ⚪ Snow White, 🟤 Chocolate Caramel, 🖤 Midnight Slate, 🌸 Sakura Pink, 🟢 Cyber Emerald.
+- 🚶 **Desktop Walking Physics**:
+  - Animated 4-phase walking strides across the desktop with directional left/right turning.
+  - Can be toggled on/off with one click (`🚶`/`🛑`).
+- 💖 **Interactive Petting & Particles**:
+  - Left-clicking/petting spawns floating hearts (`❤️`, `💖`) and sparkles (`✨`).
+  - Sleeping spawns soft floating `Zzz` letters.
+  - **Drag-to-Carry**: Dragging the pet with your mouse shows a cute dangling legs wiggle animation!
+- 📟 **Interactive Tummy Gadget (Expanded Mode)**:
+  - The pet sits down and reveals its belly clock gadget!
+  - Large, high-contrast digital LCD display (`01:42:35`) visible on any desktop background.
+  - Big **Belly Button** toggle (`[ ▶ START ]` / `[ ⏹ STOP ]`).
+  - Activity / Project selector with task memory.
+  - 1-Click Avatar & Color Theme switchers.
+  - Today's accumulated time + Weekly summary + Monthly Excel export.
+- ⏱️ **Bulletproof Time Tracking**:
+  - Real timestamp difference calculations (`datetime.now() - start_time`), never tick-counting.
+  - Survives crashes and computer sleep.
+  - Midnight auto-close at 23:59:59.
+  - Atomic JSON persistence (`worklog.json`).
 
 ---
 
 ## Quick Start
 
-### Prerequisites
-
-- Python 3.10+ (with Tkinter — included in standard Windows installs)
-- pip
-
-### Install & Run
+### 1. Install Requirements
 
 ```bash
-cd "Work Buddy"
+cd "c:\SourceCode\Work Buddy"
 pip install -r requirements.txt
+```
+
+### 2. Run Application
+
+```bash
 python main.py
 ```
 
-That's it. The bot appears in the bottom-right corner of your screen.
+---
 
-### Usage
+## Controls & Usage
 
-1. **Click the bot** to expand the panel
-2. *(Optional)* Type or select an **Activity**
-3. Click **START** to begin working
-4. Click the bot again to collapse — the timer keeps running
-5. Click the bot → **STOP** when you're done
-
-**Toolbar buttons** (expanded mode, bottom):
-| Button | Action |
-|--------|--------|
-| 📊 | Weekly summary |
-| 📋 | Export to Excel |
-| ─ | Minimize (hide) |
-| ✕ | Exit |
+| Action | How-To |
+| :--- | :--- |
+| **Pet Character** | Left-click the pet to make it happy and spawn hearts (`❤️`) |
+| **Expand Tummy Gadget** | Click the pet's head when collapsed |
+| **Collapse Back** | Click the pet's head again when expanded |
+| **Pick-up & Drag** | Click and hold with the left mouse button to carry the pet |
+| **Switch Avatar** | In expanded mode, click `🐶`, `🐱`, `🤖`, or `😊` |
+| **Change Color Theme** | In expanded mode, click `🟡`, `⚪`, `🟤`, `🖤`, `🌸`, or `🟢` |
+| **Toggle Walking** | Click `🚶` to pause or enable walking across the desktop |
+| **Start / Stop Work** | Click the big `[ ▶ START ]` / `[ ⏹ STOP ]` button on the belly |
+| **Weekly Summary** | Click the `📊` button on the accessory toolbar |
+| **Export to Excel** | Click the `📋` button on the accessory toolbar |
+| **Minimize / Hide** | Click `─` to minimize to a tiny floating companion dot |
+| **Exit** | Click `✕` (safely saves active session if running) |
 
 ---
 
-## Data Storage
+## Data & Persistence
 
-All data is stored as JSON in:
+Data is stored safely outside the installation folder in:
 
 ```
 %LOCALAPPDATA%\WorkBuddy\
-├── worklog.json      ← work sessions (source of truth)
-├── settings.json     ← user preferences
-└── workbuddy.log     ← application log
-```
-
-On non-Windows systems, data goes to `~/.workbuddy/`.
-
-### JSON Structure
-
-```json
-{
-  "active_session": {
-    "start": "2026-08-31T09:10:00",
-    "activity": "Trading Bot"
-  },
-  "days": {
-    "2026-08-31": {
-      "sessions": [
-        {
-          "start": "2026-08-31T09:10:00",
-          "end": "2026-08-31T11:40:00",
-          "duration_seconds": 9000,
-          "activity": "Trading Bot"
-        }
-      ]
-    }
-  }
-}
-```
-
-- Timestamps: ISO 8601, local time
-- Duration: integer seconds (never floating-point)
-- Writes are **atomic** (temp file + `os.replace`) to prevent corruption
-- Corrupt files are **backed up**, never silently overwritten
-
----
-
-## Excel Reports
-
-Export → select a month → save as `.xlsx`.
-
-Each workbook contains:
-- **Monthly Summary** sheet — date, total hours, sessions count
-- **One sheet per day** — Start Time, End Time, Hours Spent, Project/Activity, with totals
-
-The Excel file is generated from JSON data and never modifies it.
-
----
-
-## Project Structure
-
-```
-Work Buddy/
-├── main.py                     ← entry point
-├── requirements.txt
-├── build.bat                   ← PyInstaller build script
-├── work_buddy/
-│   ├── __init__.py
-│   ├── app.py                  ← application orchestrator
-│   ├── models.py               ← dataclasses, enums, helpers
-│   ├── storage.py              ← JSON persistence (atomic writes)
-│   ├── timer_engine.py         ← core time-tracking logic
-│   ├── settings.py             ← user settings
-│   ├── bot_window.py           ← main Tkinter GUI
-│   ├── animations.py           ← canvas animation controller
-│   ├── summary_window.py       ← weekly summary window
-│   ├── excel_export.py         ← openpyxl Excel generation
-│   └── logging_config.py       ← logging setup
-└── tests/
-    ├── test_models.py
-    ├── test_storage.py
-    ├── test_timer_engine.py
-    └── test_excel_export.py
+├── worklog.json      ← JSON work sessions (source of truth)
+├── settings.json     ← Saved avatar, theme, walking & window position
+└── workbuddy.log     ← Application log
 ```
 
 ---
 
-## Running Tests
+## Running Unit Tests
 
 ```bash
-python -m pytest tests/ -v
-# or
 python -m unittest discover -s tests -v
 ```
 
-All tests use an injected clock and temporary directories — no dependency on system time.
+All 66 test suites cover start/stop, multi-session tracking, today's totals, weekly breakdown, project summary, recovery, midnight rollover, and Excel workbook exports.
 
 ---
 
-## Building a Windows Executable
+## Building Executable (`WorkBuddy.exe`)
 
 ```bash
 pip install pyinstaller
 build.bat
 ```
-
-The executable will be at `dist/WorkBuddy.exe`.  
-No Python installation required on the target machine.
-
----
-
-## Settings
-
-Stored in `%LOCALAPPDATA%\WorkBuddy\settings.json`:
-
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `always_on_top` | `true` | Keep bot above other windows |
-| `animations_enabled` | `true` | Enable/disable all animations |
-| `idle_minutes` | `15` | Minutes before bot looks idle |
-| `sleep_minutes` | `30` | Minutes before bot falls asleep |
-| `bot_x` / `bot_y` | auto | Saved window position |
-
-Edit the file directly to change settings (restart required).
-
----
-
-## Windows Startup
-
-To start Work Buddy automatically with Windows:
-
-1. Press `Win + R`, type `shell:startup`, press Enter
-2. Create a shortcut to `WorkBuddy.exe` (or `python main.py`) in the opened folder
-
----
-
-## Architecture
-
-```
-GUI (bot_window, animations, summary_window)
-  │
-  ▼
-TimerEngine (start, stop, tick, queries)
-  │
-  ├── Storage → worklog.json
-  │
-  └── ExcelExporter → .xlsx files
-```
-
-The time-tracking engine is **fully independent of the GUI** and can be used without Tkinter.  
-All elapsed-time calculations use real timestamps (`datetime.now() - start_time`), never incrementing counters.
-
----
-
-## License
-
-MIT
+The standalone executable will be created in `dist\WorkBuddy.exe`.
