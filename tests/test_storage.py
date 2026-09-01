@@ -1,14 +1,14 @@
-"""Tests for work_buddy.storage."""
+"""Tests for work_buddy.storage (SQLite storage)."""
 
-import json
 import os
+import sqlite3
 import tempfile
 import unittest
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 from work_buddy.models import Session, WorkLog
-from work_buddy.storage import Storage
+from work_buddy.storage import DEFAULT_DB_PATH, Storage
 
 
 class TestStorage(unittest.TestCase):
@@ -22,7 +22,12 @@ class TestStorage(unittest.TestCase):
             f.unlink()
         self.tmp_dir.rmdir()
 
+    def test_default_path_alongside_code(self):
+        storage_default = Storage()
+        self.assertEqual(storage_default.db_path, DEFAULT_DB_PATH)
+
     def test_load_missing_file_returns_empty(self):
+        # When DB is empty/new
         wl = self.storage.load()
         self.assertIsNone(wl.active_session)
         self.assertEqual(len(wl.days), 0)
@@ -41,7 +46,7 @@ class TestStorage(unittest.TestCase):
 
     def test_save_creates_file(self):
         self.storage.save(WorkLog())
-        self.assertTrue(self.storage.file_path.exists())
+        self.assertTrue(self.storage.db_path.exists())
 
     def test_save_overwrites_existing(self):
         wl1 = WorkLog()
@@ -54,34 +59,13 @@ class TestStorage(unittest.TestCase):
         loaded = self.storage.load()
         self.assertIsNone(loaded.active_session)
 
-    def test_corrupt_json_returns_empty_and_backs_up(self):
-        self.storage.file_path.write_text("NOT VALID JSON!!!", encoding="utf-8")
+    def test_corrupt_database_returns_empty(self):
+        # Overwrite DB with corrupted non-sqlite data
+        self.storage.db_path.write_text("NOT A VALID SQLITE DATABASE FILE", encoding="utf-8")
 
         wl = self.storage.load()
         self.assertIsNone(wl.active_session)
         self.assertEqual(len(wl.days), 0)
-
-        # Original file should be renamed
-        self.assertFalse(self.storage.file_path.exists())
-        # Backup should exist
-        backups = list(self.tmp_dir.glob("worklog.corrupt.*.json"))
-        self.assertEqual(len(backups), 1)
-
-    def test_invalid_structure_returns_empty_and_backs_up(self):
-        # Valid JSON but invalid structure
-        data = {"active_session": {"not_a_real_field": 42}}
-        self.storage.file_path.write_text(json.dumps(data), encoding="utf-8")
-
-        wl = self.storage.load()
-        self.assertIsNone(wl.active_session)
-
-        backups = list(self.tmp_dir.glob("worklog.corrupt.*.json"))
-        self.assertEqual(len(backups), 1)
-
-    def test_atomic_write_leaves_no_temp_files(self):
-        self.storage.save(WorkLog())
-        temps = list(self.tmp_dir.glob("worklog_*.tmp"))
-        self.assertEqual(len(temps), 0)
 
     def test_multiple_saves_preserve_data(self):
         wl = WorkLog()

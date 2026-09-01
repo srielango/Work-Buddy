@@ -30,7 +30,7 @@ class WorkBuddyAppQt:
         logger.info("Work Buddy (PyQt6 Desktop Companion) starting")
 
         self.settings = Settings.load(self.data_dir / "settings.json")
-        self.storage = Storage(self.data_dir)
+        self.storage = Storage()
         self.engine = TimerEngine(self.storage)
 
         # Sync autostart registry setting

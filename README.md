@@ -41,7 +41,7 @@ Built with **Python** and **PyQt6** featuring true 32-bit transparent rendering,
   - Real timestamp difference calculations (`datetime.now() - start_time`), never tick-counting.
   - Survives crashes and computer sleep.
   - Midnight auto-close at 23:59:59.
-  - Atomic JSON persistence (`worklog.json`).
+  - SQLite database persistence (`workbuddy.db`).
 
 ---
 
@@ -99,11 +99,10 @@ You can enable or disable starting with Windows using any of these 3 methods:
 
 ## Data & Persistence
 
-Data is stored safely outside the installation folder in:
-
+- **Database**: SQLite database stored alongside the codebase (`workbuddy.db` in project root) for easy access and inspection.
+- **Config & Logs**: Saved in user data folder:
 ```
 %LOCALAPPDATA%\WorkBuddy\
-├── worklog.json      ← JSON work sessions (source of truth)
 ├── settings.json     ← Saved avatar, theme, walking, autostart & window position
 └── workbuddy.log     ← Application log
 ```

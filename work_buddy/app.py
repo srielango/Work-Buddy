@@ -27,7 +27,7 @@ class WorkBuddyApp:
         logger.info("Work Buddy starting")
 
         self.settings = Settings.load(self.data_dir / "settings.json")
-        self.storage = Storage(self.data_dir)
+        self.storage = Storage()
         self.engine = TimerEngine(self.storage)
 
         # Create root but keep it hidden until BotWindow configures it
