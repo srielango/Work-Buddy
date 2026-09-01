@@ -29,6 +29,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from .autostart import set_autostart
 from .export_dialog_qt import ExportDialogQt
 from .models import AvatarType, BotState, ColorTheme, format_duration, format_timer
 from .pet_painter import PetPainter
@@ -282,9 +283,17 @@ class PetWindow(QWidget):
 
         self.btn_walk = QPushButton("🚶" if self.settings.walking_enabled else "🛑")
         self.btn_walk.setProperty("class", "icon-tool")
-        self.btn_walk.setToolTip("Toggle Walking")
+        self.btn_walk.setToolTip("Toggle Desktop Walking")
         self.btn_walk.clicked.connect(self._toggle_walking)
         toolbar.addWidget(self.btn_walk)
+
+        self.btn_autostart = QPushButton("🚀" if self.settings.start_with_windows else "💤")
+        self.btn_autostart.setProperty("class", "icon-tool")
+        self.btn_autostart.setToolTip(
+            "Start with Windows: " + ("ON (Starts on logon)" if self.settings.start_with_windows else "OFF")
+        )
+        self.btn_autostart.clicked.connect(self._toggle_autostart)
+        toolbar.addWidget(self.btn_autostart)
 
         btn_min = QPushButton("─")
         btn_min.setProperty("class", "icon-tool")
@@ -509,6 +518,17 @@ class PetWindow(QWidget):
         self.settings.walking_enabled = not self.settings.walking_enabled
         self.btn_walk.setText("🚶" if self.settings.walking_enabled else "🛑")
         self.settings.save(self.data_dir / "settings.json")
+
+    def _toggle_autostart(self) -> None:
+        self.settings.start_with_windows = not self.settings.start_with_windows
+        set_autostart(self.settings.start_with_windows)
+        self.btn_autostart.setText("🚀" if self.settings.start_with_windows else "💤")
+        self.btn_autostart.setToolTip(
+            "Start with Windows: " + ("ON (Starts on logon)" if self.settings.start_with_windows else "OFF")
+        )
+        self.settings.save(self.data_dir / "settings.json")
+        self.painter_engine.particles.spawn_heart(self.width() / 2, 40)
+        self.update()
 
     # -----------------------------------------------------------------------
     # Start / Stop Toggle

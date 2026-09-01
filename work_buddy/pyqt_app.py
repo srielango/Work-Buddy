@@ -9,6 +9,7 @@ from pathlib import Path
 
 from PyQt6.QtWidgets import QApplication
 
+from .autostart import set_autostart
 from .logging_config import setup_logging
 from .pet_window import PetWindow
 from .settings import Settings
@@ -31,6 +32,10 @@ class WorkBuddyAppQt:
         self.settings = Settings.load(self.data_dir / "settings.json")
         self.storage = Storage(self.data_dir)
         self.engine = TimerEngine(self.storage)
+
+        # Sync autostart registry setting
+        if self.settings.start_with_windows:
+            set_autostart(True)
 
         # Qt Application
         self.qapp = QApplication.instance() or QApplication(sys.argv)

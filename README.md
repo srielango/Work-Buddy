@@ -1,7 +1,7 @@
 # Work Buddy 🐾 🤖 😊
 
 An adorable, interactive animated desktop pet companion that tracks your working time!
-Built with **Python** and **PyQt6** featuring true 32-bit transparent rendering, walking physics, multiple pets, customizable themes, and a child-friendly interactive tummy gadget.
+Built with **Python** and **PyQt6** featuring true 32-bit transparent rendering, walking physics, multiple pets, customizable themes, child-friendly interactivity, and automatic Windows startup.
 
 ![Platform](https://img.shields.io/badge/Platform-Windows%2011-blue)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-green)
@@ -13,12 +13,16 @@ Built with **Python** and **PyQt6** featuring true 32-bit transparent rendering,
 ## Features
 
 - 🐶 **4 Adorable Avatars**:
-  - **Puppy Dog**: Bouncy floppy ears, wagging tail, cute snout, happy pant/bark when working!
+  - **Puppy Dog**: Bouncy floppy ears, wagging tail, cute snout, happy smile & pant when working!
   - **Kitty Cat**: Alert pointy ears, twitching whiskers, waving tail, cat loaf/sleep pose.
   - **Robot Buddy**: Rotating glowing antenna beacon, glowing visor, and hover thrusters.
   - **Smiley Mascot**: Expressive chibi friend with animated blush cheeks.
 - 🎨 **6 Customizable Color Themes**:
   - 🟡 Golden Honey, ⚪ Snow White, 🟤 Chocolate Caramel, 🖤 Midnight Slate, 🌸 Sakura Pink, 🟢 Cyber Emerald.
+- 🚀 **Windows Auto-Start / Background Companion**:
+  - Automatically launches with Windows on user logon without showing a black console window.
+  - 1-Click Toggle right in the companion tummy toolbar (`[ 🚀 Auto-Start ]`).
+  - Helper batch scripts included (`enable_autostart.bat`, `disable_autostart.bat`).
 - 🚶 **Desktop Walking Physics**:
   - Animated 4-phase walking strides across the desktop with directional left/right turning.
   - Can be toggled on/off with one click (`🚶`/`🛑`).
@@ -58,6 +62,21 @@ python main.py
 
 ---
 
+## Enabling / Disabling Windows Auto-Start
+
+You can enable or disable starting with Windows using any of these 3 methods:
+
+1. **Inside the App**: Click the `🚀` button in the pet's expanded toolbar to toggle auto-start on/off.
+2. **Double-click batch script**: Run `enable_autostart.bat` or `disable_autostart.bat`.
+3. **Command line**:
+   ```bash
+   python -m work_buddy.autostart enable
+   python -m work_buddy.autostart disable
+   python -m work_buddy.autostart status
+   ```
+
+---
+
 ## Controls & Usage
 
 | Action | How-To |
@@ -69,6 +88,7 @@ python main.py
 | **Switch Avatar** | In expanded mode, click `🐶`, `🐱`, `🤖`, or `😊` |
 | **Change Color Theme** | In expanded mode, click `🟡`, `⚪`, `🟤`, `🖤`, `🌸`, or `🟢` |
 | **Toggle Walking** | Click `🚶` to pause or enable walking across the desktop |
+| **Toggle Auto-Start** | Click `🚀` to enable or disable starting automatically with Windows |
 | **Start / Stop Work** | Click the big `[ ▶ START ]` / `[ ⏹ STOP ]` button on the belly |
 | **Weekly Summary** | Click the `📊` button on the accessory toolbar |
 | **Export to Excel** | Click the `📋` button on the accessory toolbar |
@@ -84,7 +104,7 @@ Data is stored safely outside the installation folder in:
 ```
 %LOCALAPPDATA%\WorkBuddy\
 ├── worklog.json      ← JSON work sessions (source of truth)
-├── settings.json     ← Saved avatar, theme, walking & window position
+├── settings.json     ← Saved avatar, theme, walking, autostart & window position
 └── workbuddy.log     ← Application log
 ```
 
@@ -96,7 +116,7 @@ Data is stored safely outside the installation folder in:
 python -m unittest discover -s tests -v
 ```
 
-All 66 test suites cover start/stop, multi-session tracking, today's totals, weekly breakdown, project summary, recovery, midnight rollover, and Excel workbook exports.
+All 69 test suites cover start/stop, multi-session tracking, today's totals, weekly breakdown, project summary, autostart registry, recovery, midnight rollover, and Excel exports.
 
 ---
 

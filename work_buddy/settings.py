@@ -23,6 +23,7 @@ class Settings:
     avatar: str = "dog"
     theme: str = "golden"
     walking_enabled: bool = True
+    start_with_windows: bool = True
 
     def save(self, path: Path) -> None:
         """Write settings to a JSON file."""
